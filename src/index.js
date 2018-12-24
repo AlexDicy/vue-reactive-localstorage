@@ -21,7 +21,9 @@ const ReactiveStorage = {
         Vue.mixin({
             data() {
                 return {
-                    storage: values
+                    get storage() {
+                        return values;
+                    }
                 };
             },
             watch: makeWatchers(values)
