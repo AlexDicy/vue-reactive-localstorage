@@ -16,9 +16,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -86,61 +86,58 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var store = __webpack_require__(0)
+var store = __webpack_require__(0);
 
 var makeWatchers = function (storage, dataKey) { return Object.keys(storage).reduce(function (acc, key) {
-  var vueKey = dataKey + "." + key
+  var vueKey = dataKey + "." + key;
   // allow .bind
   var handler = function handler (value) {
-    store.set(key, value)
-    console.log((vueKey + " watcher executed..."))
-  }
+    store.set(key, value);
+  };
 
-  return Object.assign(( obj = {}, obj[vueKey] = { handler: handler }, obj ), acc)
+  return Object.assign(( obj = {}, obj[vueKey] = { handler: handler }, obj ), acc);
   var obj;
-}, {}); }
+}, {}); };
 
 module.exports = function (storage, dataKey) { return ({
   data: function () { return (( obj = {}, obj[dataKey] = storage, obj ))
     var obj;; },
   watch: makeWatchers(storage, dataKey)
-}); }
+}); };
 
 
 /***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var store = __webpack_require__(0)
+var store = __webpack_require__(0);
 
 module.exports = function (schema) {
-  // console.log(schema)
-  var local = store.getAll()
-  var storage = Object.keys(schema).reduce(function (acc, key) {
-    var value = local[key] || schema[key]
-    return Object.assign(( obj = {}, obj[key] = value, obj ), acc)
+  var local = store.getAll();
+
+  return Object.keys(schema).reduce(function (acc, key) {
+    var value = local[key] || schema[key];
+    return Object.assign(( obj = {}, obj[key] = value, obj ), acc);
     var obj;
-  }, {})
-  // console.log(storage)
-  return storage
-}
+  }, {});
+};
 
 
 /***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var makeStorage = __webpack_require__(2)
-var makeMixin = __webpack_require__(1)
+var makeStorage = __webpack_require__(2);
+var makeMixin = __webpack_require__(1);
 
 var install = function (Vue, schema, dataKey) {
-  if ( dataKey === void 0 ) dataKey = 'localStorage';
+  if ( dataKey === void 0 ) dataKey = 'storage';
 
-  var storage = makeStorage(schema)
-  Vue.mixin(makeMixin(storage, dataKey))
-}
+  var storage = makeStorage(schema);
+  Vue.mixin(makeMixin(storage, dataKey));
+};
 
-module.exports = { install: install }
+module.exports = { install: install };
 
 
 /***/ })
