@@ -1,12 +1,10 @@
-const store = require('store')
+const store = require('store');
 
 module.exports = schema => {
-  // console.log(schema)
-  const local = store.getAll()
-  const storage = Object.keys(schema).reduce((acc, key) => {
-    const value = local[key] || schema[key]
-    return Object.assign({ [key]: value }, acc)
-  }, {})
-  // console.log(storage)
-  return storage
-}
+  const local = store.getAll();
+
+  return Object.keys(schema).reduce((acc, key) => {
+    const value = local[key] || schema[key];
+    return Object.assign({ [key]: value }, acc);
+  }, {});
+};

@@ -1,8 +1,8 @@
 <template>
   <div id="app">
       <h1>Test str and num</h1>
-    <input type="text" v-model="localStorage.str" placeholder="type value for str"><br><br>
-    <input type="number" v-model="localStorage.num" placeholder="type value for num">
+    <input type="text" v-model="storage.str" placeholder="type value for str"><br><br>
+    <input type="number" v-model="storage.num" placeholder="type value for num">
       <h1>Test obj and arr</h1>
     <small>open Vue console to test below</small> <br><br>
     <input type="text" v-model="newKeyValueObj.key" placeholder="type new key for obj"> <input type="text" v-model="newKeyValueObj.value" placeholder="new value for obj">
@@ -28,12 +28,12 @@ export default {
 methods: {
     addKeyValueToObj() {
         // For reacticy with plains u must replace entire object becouse watch doesn't detect changes on further namespaces/vars inside it.
-        var copy = JSON.parse(JSON.stringify(this.localStorage.obj));
+        var copy = JSON.parse(JSON.stringify(this.storage.obj));
             copy[this.newKeyValueObj.key] = this.newKeyValueObj.value;
-        this.localStorage.obj = copy;
+        this.storage.obj = copy;
     },
     addValueToArr() {
-        this.localStorage.arr.push(this.newValueToArr);
+        this.storage.arr.push(this.newValueToArr);
     }
 }
 }
