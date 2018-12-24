@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -84,60 +84,46 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-var store = __webpack_require__(0);
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_store__);
 
-var makeWatchers = function (storage, dataKey) { return Object.keys(storage).reduce(function (acc, key) {
-  var vueKey = dataKey + "." + key;
-  // allow .bind
-  var handler = function handler (value) {
-    store.set(key, value);
-  };
 
-  return Object.assign(( obj = {}, obj[vueKey] = { handler: handler }, obj ), acc);
-  var obj;
+var makeWatchers = function (storage) { return Object.keys(storage).reduce(function (acc, key) {
+    var vueKey = "storage." + key;
+    // allow .bind
+    var handler = function handler(value) {
+        __WEBPACK_IMPORTED_MODULE_0_store___default.a.set(key, value);
+    };
+
+    return Object.assign(( obj = {}, obj[vueKey] = {handler: handler}, obj ), acc);
+    var obj;
 }, {}); };
 
-module.exports = function (storage, dataKey) { return ({
-  data: function () { return (( obj = {}, obj[dataKey] = storage, obj ))
-    var obj;; },
-  watch: makeWatchers(storage, dataKey)
-}); };
+var ReactiveStorage = {
+    install: function install(Vue, options) {
+        var local = __WEBPACK_IMPORTED_MODULE_0_store___default.a.getAll();
+        var values = Object.keys(options).reduce(function (acc, key) {
+            var value = local[key] || options[key];
+            return Object.assign(( obj = {}, obj[key] = value, obj ), acc);
+            var obj;
+        }, {});
 
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var store = __webpack_require__(0);
-
-module.exports = function (schema) {
-  var local = store.getAll();
-
-  return Object.keys(schema).reduce(function (acc, key) {
-    var value = local[key] || schema[key];
-    return Object.assign(( obj = {}, obj[key] = value, obj ), acc);
-    var obj;
-  }, {});
+        Vue.mixin({
+            data: function data() {
+                return {
+                    storage: values
+                };
+            },
+            watch: makeWatchers(values)
+        });
+    }
 };
 
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var makeStorage = __webpack_require__(2);
-var makeMixin = __webpack_require__(1);
-
-var install = function (Vue, schema, dataKey) {
-  if ( dataKey === void 0 ) dataKey = 'storage';
-
-  var storage = makeStorage(schema);
-  Vue.mixin(makeMixin(storage, dataKey));
-};
-
-module.exports = { install: install };
+/* harmony default export */ __webpack_exports__["default"] = (ReactiveStorage);
 
 
 /***/ })

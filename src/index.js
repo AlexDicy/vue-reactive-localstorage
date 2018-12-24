@@ -1,9 +1,32 @@
-const makeStorage = require('./make-storage');
-const makeMixin = require('./make-mixin');
+import store from "store";
 
-const install = (Vue, schema, dataKey = 'storage') => {
-  const storage = makeStorage(schema);
-  return Vue.mixin(makeMixin(storage, dataKey));
+const makeWatchers = (storage) => Object.keys(storage).reduce((acc, key) => {
+    const vueKey = `storage.${key}`;
+    // allow .bind
+    const handler = function handler(value) {
+        store.set(key, value);
+    };
+
+    return Object.assign({[vueKey]: {handler}}, acc);
+}, {});
+
+const ReactiveStorage = {
+    install(Vue, options) {
+        const local = store.getAll();
+        const values = Object.keys(options).reduce((acc, key) => {
+            const value = local[key] || options[key];
+            return Object.assign({[key]: value}, acc);
+        }, {});
+
+        Vue.mixin({
+            data() {
+                return {
+                    storage: values
+                };
+            },
+            watch: makeWatchers(values)
+        });
+    }
 };
 
-module.exports = { install };
+export default ReactiveStorage;

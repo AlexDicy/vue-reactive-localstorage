@@ -5,6 +5,13 @@ module.exports = {
         "promise"
     ],
     rules: {
-        "semi": ["error", "always"]
+        "semi": ["error", "always"],
+        "indent": ["error", 4],
+        "space-before-function-paren": ["error", {
+            "anonymous": "always",
+            "named": "never",
+            "asyncArrow": "always"
+        }],
+        "quotes": ["error", "double"]
     }
 };
