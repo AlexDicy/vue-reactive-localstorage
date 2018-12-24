@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("store"));
+		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define(["store"], factory);
+		define([], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("store")) : factory(root["store"]);
+		var a = factory();
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__) {
+})(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -73,30 +73,93 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
-
-/***/ }),
-/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_store__);
+var keyBase = "vrs_";
 
+var store = {
+    _initialize: function _initialize() {
+        if (window.localStorage.getItem(keyBase) === null) {
+            window.localStorage.setItem(keyBase, "[]");
+        }
+    },
+    set: function set(key, value) {
+        if (value === undefined) {
+            return this.remove(key);
+        }
+        // Set value
+        window.localStorage.setItem(keyBase + key, this.serialize(value));
+        // Store key
+        var keys = this.getKeys();
+        if (keys.indexOf(key) === -1) {
+            keys.push(key);
+        }
+        window.localStorage.setItem(keyBase, this.serialize(keys));
+
+        return value;
+    },
+    get: function get(key) {
+        var value = window.localStorage.getItem(keyBase + key);
+        return value === null ? null : this.deserialize(value);
+    },
+    remove: function remove(key) {
+        var value = this.get(key);
+        // Remove value
+        window.localStorage.removeItem(keyBase + key);
+        // Remove key
+        var keys = this.getKeys();
+        var index = keys.indexOf("test");
+        if (index !== -1) { keys.splice(index, 1); }
+        window.localStorage.setItem(keyBase, this.serialize(keys));
+
+        return value;
+    },
+    getAll: function getAll() {
+        var this$1 = this;
+
+        var items = [];
+        var keys = this.getKeys();
+        for (var i = 0; i < keys.length; i++) {
+            items[keys[i]] = this$1.get(keys[i]);
+        }
+        return items;
+    },
+    getKeys: function getKeys() {
+        return this.deserialize(window.localStorage.getItem(keyBase));
+    },
+    clear: function clear() {
+        var this$1 = this;
+
+        this.set(keyBase, "[]");
+        var keys = this.getKeys();
+        for (var i = 0; i < keys.length; i++) {
+            this$1.remove(keyBase + keys[i]);
+        }
+    },
+    serialize: function (object) {
+        return JSON.stringify(object);
+    },
+    deserialize: function (json, defaultValue) {
+        if (!json) {
+            return defaultValue;
+        }
+        var val = JSON.parse(json);
+        return val !== undefined ? val : defaultValue;
+    }
+};
 
 var makeWatchers = function (storage) { return Object.keys(storage).reduce(function (acc, key) {
     var vueKey = "storage." + key;
     // allow .bind
     var handler = function handler(value) {
-        __WEBPACK_IMPORTED_MODULE_0_store___default.a.set(key, value);
+        store.set(key, value);
     };
 
     return Object.assign(( obj = {}, obj[vueKey] = {handler: handler}, obj ), acc);
@@ -105,7 +168,8 @@ var makeWatchers = function (storage) { return Object.keys(storage).reduce(funct
 
 var ReactiveStorage = {
     install: function install(Vue, options) {
-        var local = __WEBPACK_IMPORTED_MODULE_0_store___default.a.getAll();
+        store._initialize();
+        var local = store.getAll();
         var values = Object.keys(options).reduce(function (acc, key) {
             var value = local[key] || options[key];
             return Object.assign(( obj = {}, obj[key] = value, obj ), acc);
@@ -115,7 +179,9 @@ var ReactiveStorage = {
         Vue.mixin({
             data: function data() {
                 return {
-                    storage: values
+                    get storage() {
+                        return values;
+                    }
                 };
             },
             watch: makeWatchers(values)
