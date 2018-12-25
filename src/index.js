@@ -1,10 +1,28 @@
 const keyBase = "vrs_";
 
 const store = {
-    _initialize() {
-        if (window.localStorage.getItem(keyBase) === null) {
-            window.localStorage.setItem(keyBase, "{}");
+    _initialize(defaults) {
+        let json = window.localStorage.getItem(keyBase);
+        if (json === null) {
+            window.localStorage.setItem(keyBase, JSON.stringify(defaults));
+        } else {
+            let storage = JSON.parse(json);
+            this._objectDefaults(defaults, storage);
+            window.localStorage.setItem(keyBase, JSON.stringify(storage));
         }
+    },
+    _objectDefaults(object, storage) {
+        Object.keys(object).reduce((acc, key) => {
+            let value = object[key];
+            if (typeof value === "object") {
+                this._objectDefaults(storage[key], value);
+            } else {
+                if (!storage.hasOwnProperty(key)) {
+                    storage[key] = value;
+                }
+            }
+            return acc;
+        }, []);
     },
     getRaw() {
         let json = window.localStorage.getItem(keyBase);
@@ -77,7 +95,7 @@ const store = {
 
 const ReactiveStorage = {
     install(Vue, options) {
-        store._initialize();
+        store._initialize(options);
         let values = store.getRaw();
 
         Vue.mixin({

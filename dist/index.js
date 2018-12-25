@@ -85,10 +85,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var keyBase = "vrs_";
 
 var store = {
-    _initialize: function _initialize() {
-        if (window.localStorage.getItem(keyBase) === null) {
-            window.localStorage.setItem(keyBase, "{}");
+    _initialize: function _initialize(defaults) {
+        var json = window.localStorage.getItem(keyBase);
+        if (json === null) {
+            window.localStorage.setItem(keyBase, JSON.stringify(defaults));
+        } else {
+            var storage = JSON.parse(json);
+            this._objectDefaults(defaults, storage);
+            window.localStorage.setItem(keyBase, JSON.stringify(storage));
         }
+    },
+    _objectDefaults: function _objectDefaults(object, storage) {
+        var this$1 = this;
+
+        Object.keys(object).reduce(function (acc, key) {
+            var value = object[key];
+            if (typeof value === "object") {
+                this$1._objectDefaults(storage[key], value);
+            } else {
+                if (!storage.hasOwnProperty(key)) {
+                    storage[key] = value;
+                }
+            }
+            return acc;
+        }, []);
     },
     getRaw: function getRaw() {
         var json = window.localStorage.getItem(keyBase);
@@ -165,7 +185,7 @@ var store = {
 
 var ReactiveStorage = {
     install: function install(Vue, options) {
-        store._initialize();
+        store._initialize(options);
         var values = store.getRaw();
 
         Vue.mixin({
