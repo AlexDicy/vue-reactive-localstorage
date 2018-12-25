@@ -87,8 +87,16 @@ var keyBase = "vrs_";
 var store = {
     _initialize: function _initialize() {
         if (window.localStorage.getItem(keyBase) === null) {
-            window.localStorage.setItem(keyBase, "[]");
+            window.localStorage.setItem(keyBase, "{}");
         }
+    },
+    getRaw: function getRaw() {
+        var json = window.localStorage.getItem(keyBase);
+        return JSON.parse(json);
+    },
+    setRaw: function setRaw(object) {
+        var json = JSON.stringify(object);
+        window.localStorage.setItem(keyBase, json);
     },
     set: function set(key, value) {
         if (value === undefined) {
@@ -155,26 +163,10 @@ var store = {
     }
 };
 
-var makeWatchers = function (storage) { return Object.keys(storage).reduce(function (acc, key) {
-    var vueKey = "storage." + key;
-    // allow .bind
-    var handler = function handler(value) {
-        store.set(key, value);
-    };
-
-    return Object.assign(( obj = {}, obj[vueKey] = {handler: handler}, obj ), acc);
-    var obj;
-}, {}); };
-
 var ReactiveStorage = {
     install: function install(Vue, options) {
         store._initialize();
-        var local = store.getAll();
-        var values = Object.keys(options).reduce(function (acc, key) {
-            var value = local[key] || options[key];
-            return Object.assign(( obj = {}, obj[key] = value, obj ), acc);
-            var obj;
-        }, {});
+        var values = store.getRaw();
 
         Vue.mixin({
             data: function data() {
@@ -184,7 +176,14 @@ var ReactiveStorage = {
                     }
                 };
             },
-            watch: makeWatchers(values)
+            watch: {
+                storage: {
+                    handler: function handler() {
+                        store.setRaw(this.storage);
+                    },
+                    deep: true
+                }
+            }
         });
     }
 };
