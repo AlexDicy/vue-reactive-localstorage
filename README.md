@@ -3,7 +3,7 @@ Reactive layer for interacting with localStorage from Vue 2.
 
 ### Quick install
 
-`npm install --save https://github.com/HAlex/vue-reactive-storage`
+`npm install --save https://github.com/HAlex/vue-reactive-localstorage`
 
 * This package is not on NPM, use GitHub source only.
 
@@ -28,7 +28,7 @@ new Vue({
 ### How to use Vue Reactive Storage
 
 ```js
-import ReactiveStorage from "vue-reactive-storage";
+import ReactiveStorage from "vue-reactive-localstorage";
 // Set initial values
 Vue.use(ReactiveStorage, {
     "notes": "foo",

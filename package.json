@@ -1,7 +1,7 @@
 {
-  "name": "vue-reactive-storage",
+  "name": "vue-reactive-localstorage",
   "version": "1.4.3",
-  "description": "Reactive layer for interacting with localStorage from Vue 2.",
+  "description": "Reactive layer used to interact with localStorage for Vue 2",
   "main": "dist/index.js",
   "scripts": {
     "test": "test",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HAlex/vue-reactivestorage.git"
+    "url": "git+https://github.com/HAlex/vue-reactive-localstorage.git"
   },
   "keywords": [
     "vue",
@@ -18,16 +18,16 @@
     "localstorage",
     "vue2"
   ],
-  "author": "rop",
+  "author": "halextm",
   "contributors": [
     "rop <ropbla9@gmail.com> (https://github.com/ropbla9)",
     "Vinicius Reis <luiz.vinicius73@gmail.com> (https://github.com/vinicius73)"
   ],
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ropbla9/vue-reactivestorage/issues"
+    "url": "https://github.com/HAlex/vue-reactive-localstorage/issues"
   },
-  "homepage": "https://github.com/ropbla9/vue-reactivestorage#readme",
+  "homepage": "https://github.com/HAlex/vue-reactive-localstorage#readme",
   "devDependencies": {
     "buble": "^0.15.2",
     "buble-loader": "^0.4.1",
