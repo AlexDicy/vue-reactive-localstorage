@@ -94,6 +94,7 @@ const store = {
 };
 
 const ReactiveStorage = {
+    store,
     install(Vue, options) {
         store._initialize(options);
         let values = store.getRaw();
