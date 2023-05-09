@@ -18,7 +18,7 @@ changes in your component.
 ```js
 new Vue({
     data: {
-      storage: window.localStorage
+        storage: window.localStorage
     },
     template: " <div> {{storage.notes}}, {{storage.lang}} ... </div> ",
     created: function() {
@@ -33,11 +33,11 @@ new Vue({
 import ReactiveStorage from "vue-reactive-localstorage";
 // Set initial values
 Vue.use(ReactiveStorage, {
-    "notes": "foo",
-    "lang": "foo",
-    "name": "foo",
-    "count": 1,
-    "userConfig": {
+    notes: "foo",
+    lang: "foo",
+    name: "foo",
+    count: 1,
+    userConfig: {
         age: 10,
         name: "fred"
     }
@@ -46,7 +46,7 @@ Vue.use(ReactiveStorage, {
 
 Define vars that will be stored and proxied by `Vue` (any other var in `window.localStorage` that is not on this array will not be proxied).
 
-Now you can acess the namespace <code>storage</code> in Vue.
+Now you can access the namespace <code>storage</code> in Vue.
 
 ```js
 new Vue({
