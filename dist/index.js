@@ -99,11 +99,9 @@ var store = {
         var this$1 = this;
 
         Object.keys(defaults).reduce(function (acc, key) {
-            if (typeof storage[key] === "object" && typeof defaults[key] === "object") {
-                console.log(key, storage[key], defaults[key]);
+            if (typeof storage[key] === "object" && typeof defaults[key] === "object" && storage[key] !== null && defaults[key] !== null) {
                 this$1._objectDefaults(defaults[key], storage[key]);
             } else {
-                console.log(key, storage[key], defaults[key], typeof storage[key], typeof defaults[key], typeof storage[key] !== typeof defaults[key]);
                 if (!storage.hasOwnProperty(key) || typeof storage[key] !== typeof defaults[key]) {
                     storage[key] = defaults[key];
                 }

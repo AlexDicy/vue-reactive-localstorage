@@ -13,7 +13,7 @@ const store = {
     },
     _objectDefaults(defaults, storage) {
         Object.keys(defaults).reduce((acc, key) => {
-            if (typeof storage[key] === "object" && typeof defaults[key] === "object") {
+            if (typeof storage[key] === "object" && typeof defaults[key] === "object" && storage[key] !== null && defaults[key] !== null) {
                 this._objectDefaults(defaults[key], storage[key]);
             } else {
                 if (!storage.hasOwnProperty(key) || typeof storage[key] !== typeof defaults[key]) {

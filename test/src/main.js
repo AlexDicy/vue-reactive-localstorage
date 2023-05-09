@@ -2,7 +2,10 @@ import Vue from 'vue'
 import App from './App.vue'
 import VueReactiveStorage from "../../dist/index";
 
-Vue.use(VueReactiveStorage)
+Vue.use(VueReactiveStorage, {
+  obj: {},
+  arr: []
+})
 
 new Vue({
   el: '#app',
