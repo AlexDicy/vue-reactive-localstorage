@@ -3,9 +3,11 @@ Reactive layer for interacting with localStorage from Vue 2.
 
 ### Quick install
 
-`npm i vue-reactive-localstorage`
+`npm install vue-reactive-localstorage`
 
-* This package is not on NPM, use GitHub source only.
+or
+
+`yarn add vue-reactive-localstorage`
 
 ### Why do you need it
 

@@ -95,16 +95,17 @@ var store = {
             window.localStorage.setItem(keyBase, JSON.stringify(storage));
         }
     },
-    _objectDefaults: function _objectDefaults(object, storage) {
+    _objectDefaults: function _objectDefaults(defaults, storage) {
         var this$1 = this;
 
-        Object.keys(object).reduce(function (acc, key) {
-            var value = object[key];
-            if (typeof value === "object") {
-                this$1._objectDefaults(storage[key], value);
+        Object.keys(defaults).reduce(function (acc, key) {
+            if (typeof storage[key] === "object" && typeof defaults[key] === "object") {
+                console.log(key, storage[key], defaults[key]);
+                this$1._objectDefaults(defaults[key], storage[key]);
             } else {
-                if (!storage.hasOwnProperty(key)) {
-                    storage[key] = value;
+                console.log(key, storage[key], defaults[key], typeof storage[key], typeof defaults[key], typeof storage[key] !== typeof defaults[key]);
+                if (!storage.hasOwnProperty(key) || typeof storage[key] !== typeof defaults[key]) {
+                    storage[key] = defaults[key];
                 }
             }
             return acc;

@@ -11,14 +11,13 @@ const store = {
             window.localStorage.setItem(keyBase, JSON.stringify(storage));
         }
     },
-    _objectDefaults(object, storage) {
-        Object.keys(object).reduce((acc, key) => {
-            let value = object[key];
-            if (typeof value === "object") {
-                this._objectDefaults(storage[key], value);
+    _objectDefaults(defaults, storage) {
+        Object.keys(defaults).reduce((acc, key) => {
+            if (typeof storage[key] === "object" && typeof defaults[key] === "object") {
+                this._objectDefaults(defaults[key], storage[key]);
             } else {
-                if (!storage.hasOwnProperty(key)) {
-                    storage[key] = value;
+                if (!storage.hasOwnProperty(key) || typeof storage[key] !== typeof defaults[key]) {
+                    storage[key] = defaults[key];
                 }
             }
             return acc;
