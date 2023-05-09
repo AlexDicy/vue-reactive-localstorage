@@ -98,16 +98,15 @@ var store = {
     _objectDefaults: function _objectDefaults(defaults, storage) {
         var this$1 = this;
 
-        Object.keys(defaults).reduce(function (acc, key) {
-            if (typeof storage[key] === "object" && typeof defaults[key] === "object" && storage[key] !== null && defaults[key] !== null) {
-                this$1._objectDefaults(defaults[key], storage[key]);
-            } else {
-                if (!storage.hasOwnProperty(key) || typeof storage[key] !== typeof defaults[key]) {
-                    storage[key] = defaults[key];
+        for (var key in defaults) {
+            if (typeof defaults[key] === "object" && typeof storage[key] === "object" && defaults[key] !== null && storage[key] !== null) {
+                if (!Array.isArray(defaults[key])) {
+                    this$1._objectDefaults(defaults[key], storage[key]);
                 }
+            } else if (!storage.hasOwnProperty(key) && typeof defaults[key] !== typeof storage[key]) {
+                storage[key] = defaults[key];
             }
-            return acc;
-        }, []);
+        }
     },
     getRaw: function getRaw() {
         var json = window.localStorage.getItem(keyBase);

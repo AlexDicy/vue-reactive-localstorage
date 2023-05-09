@@ -12,16 +12,15 @@ const store = {
         }
     },
     _objectDefaults(defaults, storage) {
-        Object.keys(defaults).reduce((acc, key) => {
-            if (typeof storage[key] === "object" && typeof defaults[key] === "object" && storage[key] !== null && defaults[key] !== null) {
-                this._objectDefaults(defaults[key], storage[key]);
-            } else {
-                if (!storage.hasOwnProperty(key) || typeof storage[key] !== typeof defaults[key]) {
-                    storage[key] = defaults[key];
+        for (const key in defaults) {
+            if (typeof defaults[key] === "object" && typeof storage[key] === "object" && defaults[key] !== null && storage[key] !== null) {
+                if (!Array.isArray(defaults[key])) {
+                    this._objectDefaults(defaults[key], storage[key]);
                 }
+            } else if (!storage.hasOwnProperty(key) && typeof defaults[key] !== typeof storage[key]) {
+                storage[key] = defaults[key];
             }
-            return acc;
-        }, []);
+        }
     },
     getRaw() {
         const json = window.localStorage.getItem(keyBase);
