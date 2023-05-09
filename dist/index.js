@@ -95,20 +95,18 @@ var store = {
             window.localStorage.setItem(keyBase, JSON.stringify(storage));
         }
     },
-    _objectDefaults: function _objectDefaults(object, storage) {
+    _objectDefaults: function _objectDefaults(defaults, storage) {
         var this$1 = this;
 
-        Object.keys(object).reduce(function (acc, key) {
-            var value = object[key];
-            if (typeof value === "object") {
-                this$1._objectDefaults(storage[key], value);
-            } else {
-                if (!storage.hasOwnProperty(key)) {
-                    storage[key] = value;
+        for (var key in defaults) {
+            if (typeof defaults[key] === "object" && typeof storage[key] === "object" && defaults[key] !== null && storage[key] !== null) {
+                if (!Array.isArray(defaults[key])) {
+                    this$1._objectDefaults(defaults[key], storage[key]);
                 }
+            } else if (!storage.hasOwnProperty(key) && typeof defaults[key] !== typeof storage[key]) {
+                storage[key] = defaults[key];
             }
-            return acc;
-        }, []);
+        }
     },
     getRaw: function getRaw() {
         var json = window.localStorage.getItem(keyBase);
