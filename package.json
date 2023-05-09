@@ -8,6 +8,10 @@
     "build": "npm run lint && webpack --config webpack.config.js",
     "lint": "eslint src/*.js"
   },
+  "files": [
+    "dist",
+    "src"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/HAlex/vue-reactive-localstorage.git"
