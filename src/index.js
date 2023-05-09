@@ -2,11 +2,11 @@ const keyBase = "vrs_";
 
 const store = {
     _initialize(defaults) {
-        let json = window.localStorage.getItem(keyBase);
+        const json = window.localStorage.getItem(keyBase);
         if (json === null) {
             window.localStorage.setItem(keyBase, JSON.stringify(defaults));
         } else {
-            let storage = JSON.parse(json);
+            const storage = JSON.parse(json);
             this._objectDefaults(defaults, storage);
             window.localStorage.setItem(keyBase, JSON.stringify(storage));
         }
@@ -24,11 +24,11 @@ const store = {
         }, []);
     },
     getRaw() {
-        let json = window.localStorage.getItem(keyBase);
+        const json = window.localStorage.getItem(keyBase);
         return JSON.parse(json);
     },
     setRaw(object) {
-        let json = JSON.stringify(object);
+        const json = JSON.stringify(object);
         window.localStorage.setItem(keyBase, json);
     },
     set(key, value) {
@@ -38,7 +38,7 @@ const store = {
         // Set value
         window.localStorage.setItem(keyBase + key, this.serialize(value));
         // Store key
-        let keys = this.getKeys();
+        const keys = this.getKeys();
         if (keys.indexOf(key) === -1) {
             keys.push(key);
         }
@@ -47,24 +47,24 @@ const store = {
         return value;
     },
     get(key) {
-        let value = window.localStorage.getItem(keyBase + key);
+        const value = window.localStorage.getItem(keyBase + key);
         return value === null ? null : this.deserialize(value);
     },
     remove(key) {
-        let value = this.get(key);
+        const value = this.get(key);
         // Remove value
         window.localStorage.removeItem(keyBase + key);
         // Remove key
-        let keys = this.getKeys();
-        let index = keys.indexOf("test");
+        const keys = this.getKeys();
+        const index = keys.indexOf("test");
         if (index !== -1) keys.splice(index, 1);
         window.localStorage.setItem(keyBase, this.serialize(keys));
 
         return value;
     },
     getAll() {
-        let items = [];
-        let keys = this.getKeys();
+        const items = [];
+        const keys = this.getKeys();
         for (let i = 0; i < keys.length; i++) {
             items[keys[i]] = this.get(keys[i]);
         }
@@ -75,7 +75,7 @@ const store = {
     },
     clear() {
         this.set(keyBase, "[]");
-        let keys = this.getKeys();
+        const keys = this.getKeys();
         for (let i = 0; i < keys.length; i++) {
             this.remove(keyBase + keys[i]);
         }
@@ -87,7 +87,7 @@ const store = {
         if (!json) {
             return defaultValue;
         }
-        let val = JSON.parse(json);
+        const val = JSON.parse(json);
         return val !== undefined ? val : defaultValue;
     }
 };
@@ -96,7 +96,7 @@ const ReactiveStorage = {
     store,
     install(Vue, options) {
         store._initialize(options);
-        let values = store.getRaw();
+        const values = store.getRaw();
 
         Vue.mixin({
             data() {
