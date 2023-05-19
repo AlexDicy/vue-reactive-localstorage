@@ -103,7 +103,7 @@ var store = {
                 if (!Array.isArray(defaults[key])) {
                     this$1._objectDefaults(defaults[key], storage[key]);
                 }
-            } else if (!storage.hasOwnProperty(key) && typeof defaults[key] !== typeof storage[key]) {
+            } else if (!storage.hasOwnProperty(key) || typeof defaults[key] !== typeof storage[key]) {
                 storage[key] = defaults[key];
             }
         }

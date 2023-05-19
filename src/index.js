@@ -17,7 +17,7 @@ const store = {
                 if (!Array.isArray(defaults[key])) {
                     this._objectDefaults(defaults[key], storage[key]);
                 }
-            } else if (!storage.hasOwnProperty(key) && typeof defaults[key] !== typeof storage[key]) {
+            } else if (!storage.hasOwnProperty(key) || typeof defaults[key] !== typeof storage[key]) {
                 storage[key] = defaults[key];
             }
         }
